@@ -1,3 +1,3 @@
 function showCombinedModelSpec()
-    ncdisp('../data/full_data_set.nc')
+    ncdisp('./data/model_combined.nc')
 end

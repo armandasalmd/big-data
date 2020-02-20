@@ -1,10 +1,10 @@
 %%
 % Create some data
-[X] = 30.05:0.1:69.95; % create X values 400x1
-[Y] = -24.95:0.1:44.95;% create Y values 700x1
+[X] = 30.05:0.1:69.95; % create X value
+[Y] = -24.95:0.1:44.95;% create Y values
 % create a mesh of values
-Z = peaks(700); % generate random peak data 700x700
-Z = Z(:,151:550); % transform to 700x400
+Z = peaks(700);
+Z = Z(:,151:550);
 % Display the raw data
 figure(1)
 mesh(X,Y,Z)
@@ -30,6 +30,8 @@ geoshow(gca, land, 'FaceColor', [0.5 0.7 0.5])
 
 lakes = shaperead('worldlakes', 'UseGeoCoords', true);
 geoshow(lakes, 'FaceColor', 'blue')
+
+
 
 rivers = shaperead('worldrivers', 'UseGeoCoords', true);
 geoshow(rivers, 'Color', 'blue')

@@ -14,8 +14,8 @@
 
 % === Plot the simple mean ensemble with contourf(m1)
 % === and axis values mapped to coordinates
-% ensembleModel = genMeanEnsemble(getAllModels());
-% m1 = ensembleModel(:,:,1);
+ ensembleModel = genMeanEnsemble(getAllModels());
+ m1 = ensembleModel(:,:,1);
 % figure
 % imagesc(getCoordinates('lat'), getCoordinates('lon'), m1)
 % xlabel 'degrees longitude'
