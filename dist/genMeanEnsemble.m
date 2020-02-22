@@ -2,6 +2,7 @@
 function ensemble = genMeanEnsemble(models)
     % create empty matrix with the same dimentions
     sz = size(models);
+
     e = zeros(sz(2), sz(3), sz(4));
     for i = 1:sz(4) % iterate every hour
         for j = 1:sz(2) % iterate every lat

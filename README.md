@@ -18,6 +18,17 @@
 1. Matlab IDE
 2. Install addon - Parallel Computing Toolbox
 3. Install addon - Mapping Toolbox
+4. Install Git on your machine
+
+**_Setting up the files_**
+
+We are going to use CBE data files and individual model (.nc)
+
+-   `git clone https://github.coventry.ac.uk/barkausa/big-data.git`
+-   `/data/cbe/` -> `24HR_CBE_01.csv` - `24HR_CBE_25.csv`
+-   `/data/` -> `model1.nc` - `model7.nc`
+
+** make sure to rename the individual models are specified above! (modelX.nc)**
 
 **_Running the code_**
 

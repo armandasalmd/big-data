@@ -2,7 +2,7 @@
 clear
 
 %% Creat a big array of data
-BigData = rand(200,10000); % a 200 x 10k array
+BigData = rand(2000,500); % a 200 x 10k array
 
 %% start a parallel pool
 % If you don't explicitly do this, and use a parallel processing command,
