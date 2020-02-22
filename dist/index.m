@@ -11,14 +11,16 @@
 % their difference plot. Figures gets saved in /figures folder.
 % Also, execution time printed in the console.
 % Program assumes that this scrip runs from './dist/index.m'
-hourToUseForPlotting = 1
-
 disp('Program started!')
 clear
 
-if isempty(gcp('nocreate')) % check if we already have a parallel pool?
-    parpool(6);
-end
+hourToUseForPlotting = 1
+
+% if isempty(gcp('nocreate')) % check if we already have a parallel pool?
+%     parpool(6);
+% end
+
+
 
 %% Loading simple mean ensemble (SME)
 % if exists load from file, else calculate using parallel processing
@@ -26,6 +28,7 @@ end
 
 if isfile('../data/org/24HR_Orig_01.csv') && isfile('../data/org/24HR_Orig_25.csv')
 	% program assumes that files 1-25 exists
+	disp('Loading ORG')
 	ORG = zeros(698,398,25);
 	for i = 1:25
 		if i < 10
@@ -37,7 +40,7 @@ if isfile('../data/org/24HR_Orig_01.csv') && isfile('../data/org/24HR_Orig_25.cs
 	end
 else
 	disp('ORG files doesnt exist')
-	exit
+	return
 end
 
 %% Scale the SME if needed
@@ -48,6 +51,7 @@ end
 
 if isfile('../data/cbe/24HR_CBE_01.csv') && isfile('../data/cbe/24HR_CBE_25.csv')
 	% program assumes that files 1-25 exists
+	disp('Loading CBE')
 	CBE = zeros(698,398,25);
 	for i = 1:25
 		if i < 10
@@ -57,29 +61,45 @@ if isfile('../data/cbe/24HR_CBE_01.csv') && isfile('../data/cbe/24HR_CBE_25.csv'
 		end
 		CBE(:,:,i) = csvread(fileName)';
 	end
+	CBE = scaleModel(CBE);
 else
 	disp('CBE files doesnt exist')
-	exit
+	return
 end
-CBE = scaleModel(CBE);
 
 
-% 7 700 400 25
-models = getAllModels();
-%% TODO: Add to the report as parallel processing with small data set
-% runs longer due to tasks splitting
-SME = zeros(700,400,25);
-% Creating single mean ensemble
-for idx = 1:25
-	SME(:,:,idx) = mean(models(:,:,:,idx), 1);
+%% Load if exist or generate Simple Mean Ensemble
+% parallel processing is inefficient due to small data set
+% thus disabled. parfor runs longer due to tasks splitting
+
+if isfile('../data/sme/24HR_SME_01.csv') && isfile('../data/sme/24HR_SME_25.csv')
+	% program assumes that files 1-25 exists
+	disp('Loading SME')
+	SME = zeros(698,398,25);
+	for i = 1:25
+		if i < 10
+			fileName = ['../data/sme/24HR_SME_0', int2str(i), '.csv'];
+		else
+			fileName = ['../data/sme/24HR_SME_', int2str(i), '.csv'];
+		end
+		SME(:,:,i) = csvread(fileName);
+	end
+else
+	disp('Generating SME')
+	SME = genSME();
+	saveSME(SME)
 end
-SME(end-1:end,:,:) = []; % drops last 2 columns. 700 -> 698
-SME(:,end-1:end,:) = []; % drops last 2 rows. 400 -> 398
-clear models;
 
-% ensemble = genMeanEnsemble(models);
 
 %% Sub-space the ensembles
+% plotHeatMap(CBE(:,:,1))
+% plotMeshMap(CBE(:,:,1))
+% sets the visibility of the various parts of the
+% plot so the land, cities etc shows through.
+
+Plots = findobj(gca,'Type','Axes');
+Plots.SortMethod = 'depth';
+clear Plots;
 
 %% Running parallel processing on subspaced sets
 
@@ -94,16 +114,85 @@ clear models;
 %% Save the ploted figures
 % use /figures folder
 
+
 %% Removing not needed variables
 clear fileName;
 clear i;
 clear idx;
 clear hourToUseForPlotting;
+
 disp('Program ended!')
 
 %% Additional functions
 function scaledModel = scaleModel(model)
-	% model is matrix of 700x400x25
+	% expected model matrix size is 700x400x25
 	scaledModel = (model.*1.0497548e-07)+2.9458301e-08;
 end
 
+function plotHeatMap(model)
+	% model must be 698x398
+	[X] = 30.05:0.1:69.75; % create X values 398x1
+	[Y] = -24.95:0.1:44.75;% create Y values 698x1
+	[X,Y] = meshgrid(X, Y);
+	model = flip(model, 2);% flip the Y(2nd) axis
+	% open new figure window
+	figure
+	clf
+	worldmap('Europe'); % set the part of the earth to show
+	load coastlines
+	plotm(coastlat,coastlon)
+	loadMapEntities()
+	% Plot the data
+	% edge colour outlines the edges, 'FaceAlpha', sets the transparency
+	surfm(X, Y, model, 'EdgeColor', 'none', 'FaceAlpha', 0.9)
+end
+
+function plotMeshMap(model)
+	% model must be 698x398
+	[X] = 30.05:0.1:69.75; % create X values 398x1
+	[Y] = -24.95:0.1:44.75;% create Y values 698x1
+	figure
+	mesh(X, Y, model)
+end
+
+function loadMapEntities()
+	land = shaperead('landareas', 'UseGeoCoords', true);
+	geoshow(gca, land, 'FaceColor', [0.5 0.7 0.5])
+
+	lakes = shaperead('worldlakes', 'UseGeoCoords', true);
+	geoshow(lakes, 'FaceColor', 'blue')
+
+	rivers = shaperead('worldrivers', 'UseGeoCoords', true);
+	geoshow(rivers, 'Color', 'cyan')
+
+	cities = shaperead('worldcities', 'UseGeoCoords', true);
+	geoshow(cities, 'Marker', '.', 'Color', 'yellow')
+end
+
+function ensemble = genSME()
+	models = getAllModels(); % matrix 7 700 400 25
+	ensemble = zeros(700,400,25);
+	% Creating single mean ensemble - calc mean
+	for idx = 1:25
+		ensemble(:,:,idx) = mean(models(:,:,:,idx), 1);
+	end
+	ensemble(end-1:end,:,:) = []; % drops last 2 columns. 700 -> 698
+	ensemble(:,end-1:end,:) = []; % drops last 2 rows. 400 -> 398
+	clear models;
+end
+
+function saveSME(ensembles)
+	sz = size(ensembles);
+	if not(sz == [698, 398, 25])
+		disp('Warning: dimentions are not 698x398x25!')
+	end
+	for idx = 1:sz(3)
+		if idx < 10
+			fileName = ['../data/sme/24HR_SME_0', int2str(idx), '.csv'];
+		else
+			fileName = ['../data/sme/24HR_SME_', int2str(idx), '.csv'];
+		end
+		csvwrite(fileName, ensembles(:,:,idx));
+	end
+	disp('SME was saved for the next time /data/sme')
+end
