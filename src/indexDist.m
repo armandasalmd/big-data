@@ -14,30 +14,16 @@
 disp('Program started!')
 clear
 
-hourToUseForPlotting = 1
+selectedHour = 21
 
 % if isempty(gcp('nocreate')) % check if we already have a parallel pool?
 %     parpool(6);
 % end
 
-
-
-%% Loading simple mean ensemble (SME)
-% if exists load from file, else calculate using parallel processing
-% when calculating your own values, the result has to be scaled
+%% Loading Observations ensemble (ORG)
 
 if isfile('../data/org/24HR_Orig_01.csv') && isfile('../data/org/24HR_Orig_25.csv')
-	% program assumes that files 1-25 exists
-	disp('Loading ORG')
-	ORG = zeros(698,398,25);
-	for i = 1:25
-		if i < 10
-			fileName = ['../data/org/24HR_Orig_0', int2str(i), '.csv'];
-		else
-			fileName = ['../data/org/24HR_Orig_', int2str(i), '.csv'];
-		end
-		ORG(:,:,i) = csvread(fileName)';
-	end
+	ORG = loadCSV('org', 'Orig');
 else
 	disp('ORG files doesnt exist')
 	return
@@ -50,49 +36,27 @@ end
 % if exists load from .csv files, else disp(error)
 
 if isfile('../data/cbe/24HR_CBE_01.csv') && isfile('../data/cbe/24HR_CBE_25.csv')
-	% program assumes that files 1-25 exists
-	disp('Loading CBE')
-	CBE = zeros(698,398,25);
-	for i = 1:25
-		if i < 10
-			fileName = ['../data/cbe/24HR_CBE_0', int2str(i), '.csv'];
-		else
-			fileName = ['../data/cbe/24HR_CBE_', int2str(i), '.csv'];
-		end
-		CBE(:,:,i) = csvread(fileName)';
-	end
+	CBE = loadCSV('cbe', 'CBE');
 	CBE = scaleModel(CBE);
 else
 	disp('CBE files doesnt exist')
 	return
 end
 
-
 %% Load if exist or generate Simple Mean Ensemble
 % parallel processing is inefficient due to small data set
 % thus disabled. parfor runs longer due to tasks splitting
 
 if isfile('../data/sme/24HR_SME_01.csv') && isfile('../data/sme/24HR_SME_25.csv')
-	% program assumes that files 1-25 exists
-	disp('Loading SME')
-	SME = zeros(698,398,25);
-	for i = 1:25
-		if i < 10
-			fileName = ['../data/sme/24HR_SME_0', int2str(i), '.csv'];
-		else
-			fileName = ['../data/sme/24HR_SME_', int2str(i), '.csv'];
-		end
-		SME(:,:,i) = csvread(fileName);
-	end
+	SME = loadCSV('sme', 'SME');
 else
 	disp('Generating SME')
 	SME = genSME();
 	saveSME(SME)
 end
 
-
 %% Sub-space the ensembles
-% plotHeatMap(CBE(:,:,1))
+plotHeatMap(CBE(:,:,1))
 % plotMeshMap(CBE(:,:,1))
 % sets the visibility of the various parts of the
 % plot so the land, cities etc shows through.
@@ -102,6 +66,9 @@ Plots.SortMethod = 'depth';
 clear Plots;
 
 %% Running parallel processing on subspaced sets
+
+percents = accuracyPercent(ORG(:,:,selectedHour), SME(:,:,selectedHour), CBE(:,:,selectedHour));
+avg = sum(percents(:));
 
 %% Assemble the result into a single variable
 
@@ -170,7 +137,7 @@ function loadMapEntities()
 end
 
 function ensemble = genSME()
-	models = getAllModels(); % matrix 7 700 400 25
+	models = getModels(); % matrix 7 700 400 25
 	ensemble = zeros(700,400,25);
 	% Creating single mean ensemble - calc mean
 	for idx = 1:25
@@ -192,7 +159,8 @@ function saveSME(ensembles)
 		else
 			fileName = ['../data/sme/24HR_SME_', int2str(idx), '.csv'];
 		end
-		csvwrite(fileName, ensembles(:,:,idx));
+		csvwrite(fileName, ensembles(:,:,idx)'); % Alert: rotates matrix for consistency 
 	end
 	disp('SME was saved for the next time /data/sme')
 end
+
