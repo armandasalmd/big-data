@@ -1,15 +1,15 @@
 function actionPlotAllModels(models)
 	hour = input('Select an hour 1-25: ');
 	if hour >= 1 && hour <= 25
-		draw(models(:,:,:,hour));
+		draw(models(:,:,:,hour), strcat("Plot All Models. Hour ", int2str(hour)));
 	end
 end
 
 % expects 8x700x400 matrix
-function draw(models)
+function draw(models, mTitle)
 	sz = size(models);
 	modelNames = getModelNames();
-	figure('units','normalized','outerposition',[0 0 1 1],'menubar','none','numbertitle','off','name','Plot All Models');
+	figure('units','normalized','outerposition',[0 0 1 1],'menubar','none','numbertitle','off','name',mTitle);
 	for idx = 1 : sz(1)	
 		prop = squeeze(models(idx, :, :));
 		subplot(2, 4, idx);
