@@ -1,0 +1,47 @@
+TITLE: Main(index) project file
+DESCRIPTION: This is a starting file to run the program. It handles menu logic and loads the files
+
+PRINT: program started!
+
+# CREATE model matrix variables globally
+CBE <- NULL
+ORIG <- NULL
+MAIN <- NULL
+
+choice <- -1
+
+WHILE choice is not equal to 0
+	PRINT: menu options
+	choice <- get user input
+	SWITCH choice
+		CASE 0: exit the program by CONTINUE
+		CASE 1:
+			MAIN <- load main data file
+			pass that data to plot all models
+		CASE 2:
+			MAIN <- load main data file
+			pass that data to plot single model with slider to pick hour
+		CASE 3:
+			CBE <- load cluster based ensemble
+			IF CBE loaded successfully THEN
+				ORIG <- load ORIG ensemble
+			END
+		DEFAULT:
+			PRINT: unknown action error
+	END
+END
+
+FUNCTION loadMainDataFile
+	result <- -1
+	IF ORG is empty
+		IF file models-combined.nc EXIST
+			modelNames <- get model names
+			create result 4D matrix 7x700x400x25
+			read opened file and SET this to a variable MAIN
+			result <- 1
+		END
+	END
+	RETURN result
+END
+
+PRINT: program finished!

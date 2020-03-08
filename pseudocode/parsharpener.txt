@@ -1,0 +1,42 @@
+TITLE: parallel sharpener function pseudocode
+DESCRIPTION: this algorithm takes model (matrix) and number 1-5 for strength and diminishes the values that are outstanding in parallel
+
+FUNCTION parSharpenEnsemble(ensemble, strength)
+	numProcessors <- SET to 6
+	IF check if we dont have parallel pool, THEN
+		start parallel pool passing "numProcessors"
+	END
+
+	sz <- the dimentions of ensemble represented as array
+	result <- create empty output matrix with the same dimentions as ensemble
+	
+
+	PARFOR set i: 1 to sz[1]
+		FOR set j: 1 to sz[2]
+			# Average call is executed every time to make system stress and prove
+			# that parallel processing can be implemented in this algorithm
+			# in case it would be of a bigger data set
+			average <- SET function return value: average(ensemble)
+			value <- ensemble[i][j]
+			percent <- calculate value relation with average by: value * 100 / average
+			IF absolute value of "percent" is more than 1000(%)
+				value <- SET to be equal ensemble[i][j] divided by "strength"
+			ELSE			
+				value <- SET to be equal ensemble[i][j] (copy)
+			END
+			result[i][j] <- SET to be equal to "value"
+		END
+	END
+	RETURN ensemble
+END
+
+FUNCTION average(ensemble matrix)
+	sz <- the dimentions of ensemble represented as array
+	sum <- set initial average to 0
+	FOR set i: 1 to sz[1]
+		FOR set j: 1 to sz[2]
+			sum <- add every value in the matrix
+		END
+	END
+	RETURN the sum divided by the metrix cells count (n)
+END

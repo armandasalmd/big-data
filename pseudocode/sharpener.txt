@@ -1,0 +1,24 @@
+TITLE: sharpener function pseudocode
+DESCRIPTION: this algorithm takes model (matrix) and number 1-5 for strength and diminishes the values that are outstanding
+
+FUNCTION sharpenEnsemble(ensemble, strength)
+	sz <- the dimentions of ensemble in array
+	average <- set initial average to 0
+	FOR set i: 1 to sz[1]
+		FOR set j: 1 to sz[2]
+			average <- add every value in the matrix
+		END
+	END
+	average <- average divided by the metrix cells count
+
+	FOR set i: 1 to sz[1]
+		FOR set j: 1 to sz[2]
+			value <- ensemble[i][j]
+			percent <- calculate value relation with average by: value * 100 / average
+			IF absolute value of "percent" is more than 1000(%)
+				SET ensemble[i][j] to be equal itself divided by "strength"
+			END
+		END
+	END
+	RETURN ensemble
+END

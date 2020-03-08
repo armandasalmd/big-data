@@ -111,7 +111,7 @@ function result = parSharpenEnsemble(ensemble, strength)
 	result = zeros(size(ensemble));
 	L = size(result, 2);
 	tic
-	for idx = 1:sz(1)
+	parfor idx = 1:sz(1)
 		for jdx = 1:L
 			% do it for the first half - reduces wait time 4 times
 			if jdx < L / 4

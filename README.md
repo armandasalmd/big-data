@@ -2,43 +2,10 @@
 
 #### Table of contents
 
--   Installation guide
-    -   prerequisites
-    -   running the code
+-   Installation guid
 -   Folder/File structure description
 -   Simple idea & project description
 -   Output samples
-
----
-
-#### Installation guide
-
-**_Prerequisites_**
-
-1. Matlab IDE
-2. Install addon - Parallel Computing Toolbox
-3. Install addon - Mapping Toolbox
-4. Install Git on your machine
-
-**_Setting up the files_**
-
-We are going to use CBE data files and individual model (.nc)
-
--   `git clone https://github.coventry.ac.uk/barkausa/big-data.git`
--   `/data/cbe/` -> `24HR_CBE_01.csv` - `24HR_CBE_25.csv`
--   `/data/` -> `model1.nc` - `model7.nc`
-
-** make sure to rename the individual models are specified above! (modelX.nc)**
-
-**_Running the code_**
-
-Type in command window
-
-```matlab
-run('./dist/index.m')
-```
-
-That's it B-)
 
 ---
 
@@ -48,6 +15,7 @@ That's it B-)
 -   `/data/cbe` - hold cbe big data files that were given
 -   `/dist` - distribution/production source code
 -   `/images` - any project related images
+-   `/pseudocode` - holds pseudocode files in .txt format
 -   `/specs` - directory with all specification versions
 -   `/src` - place where development code goes
 -   `flowchart.drawio` - flowchart file
