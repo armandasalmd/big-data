@@ -15,7 +15,7 @@
 % Program assumes that this scrip runs from './dist/index.m'
 disp('Program started!')
 
-% ============ START MAIN PROGRAM ==============
+% =============== MAIN PROGRAM =================
 
 CBE = [];
 ORIG = [];
@@ -62,14 +62,13 @@ while not(choice == 0)
 	fprintf('\n')
 end
 
-% ============= DECONSTRUCTING =================
+% ============== TERMINATED ====================
 clear choice
 clear result
 clc
 disp('Program finished!')
-% =============== END MAIN PROGRAM =============
+% =============== MAIN PROGRAM END =============
 
-% ============ START UTIL FUNCTIONS ============
 function result = loadMainDataFile(org)
 	result = -1;
 	if size(org) == 0
@@ -87,8 +86,9 @@ function result = loadCBE(org)
 	result = -1;
 	if size(org) == 0
 		if isfile('../data/org/24HR_Orig_01.csv') && isfile('../data/org/24HR_Orig_25.csv')
-			result = loadCSV('cbe', 'CBE');
-			CBE = scaleModel(result);
+			result = loadCSV('cbe', 'CBE');					% load from file
+			result = eliminateZerosWithSomeValue(result);   % get rid of zeros
+			result = (result.*1.0497548e-07)+2.9458301e-08; % scale back
 		else
 			disp('CBE files doesnt exist')
 		end
@@ -101,7 +101,7 @@ function result = loadORIG(org)
 	result = -1;
 	if size(org) == 0
 		if isfile('../data/org/24HR_Orig_01.csv') && isfile('../data/org/24HR_Orig_25.csv')
-			result = loadCSV('sme', 'SME');
+			result = loadCSV('org', 'Orig');
 		else
 			disp('ORG files doesnt exist')
 		end
@@ -110,8 +110,21 @@ function result = loadORIG(org)
 	end
 end
 
-function scaledModel = scaleModel(model)
-	% expected model matrix size is 700x400x25
-	scaledModel = (model.*1.0497548e-07)+2.9458301e-08;
+function result = eliminateZerosWithSomeValue(ensemble)
+	% expected 698x398x25 matrix
+	sz = size(ensemble);
+	% tic
+	for kdx = 1:sz(3)
+		defaultVal = ensemble(3, 3, kdx);
+		% disp(defaultVal)
+		for idx = 1:sz(1)
+			for jdx = 1:sz(2)
+				if ensemble(idx, jdx, kdx) == 0
+					ensemble(idx, jdx, kdx) = defaultVal;
+				end
+			end
+		end
+	end
+	result = ensemble;
+	% time = toc
 end
-% =============== END UTIL FUNCTIONS =================

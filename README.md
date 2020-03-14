@@ -9,6 +9,8 @@
 
 ---
 
+Total 461 line of code in /dist folder over all files
+
 #### Folder/File structure description
 
 -   `/data` - holds big data files that were given

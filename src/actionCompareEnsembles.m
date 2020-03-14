@@ -93,8 +93,8 @@ function result = sharpenEnsemble(ensemble, strength)
 		for jdx = 1:sz(2)
 			percent = ensemble(idx,jdx) * 100 / average;
 			if abs(percent) > 1000
-				% ensemble(idx,jdx) = ensemble(idx,jdx) / strength;
-				ensemble(idx,jdx) = average;
+				ensemble(idx,jdx) = ensemble(idx,jdx) / strength;
+				% ensemble(idx,jdx) = average;
 			end
 		end
 	end
