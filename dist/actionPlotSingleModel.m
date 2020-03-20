@@ -1,4 +1,4 @@
-function actionPlotSingleModel(models)
+function actionPlotSingleModel(models, colorSchemaId)
 	ModelNames = getModelNames();
 	Ids = 1:length(ModelNames);
 	T = table(Ids(:), ModelNames(:), 'VariableNames',{'ID','MODEL NAME'});
@@ -9,6 +9,7 @@ function actionPlotSingleModel(models)
 		prop = squeeze(models(choice, :, :, :));
 		draw(prop, strcat("o3 Model ", ModelNames(choice)));
 	end
+	changeColorSchema(colorSchemaId);
 end
 
 % expects 700x400x25

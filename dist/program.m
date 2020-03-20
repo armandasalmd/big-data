@@ -21,12 +21,15 @@ CBE = [];
 ORIG = [];
 MAIN = [];
 choice = -1;
+allColorSchemas = ["parula", "color blind", "jet", "hsv", "hot", "cool", "spring", "summer"];
+colorSchema = 1;
 
 while not(choice == 0)
 	disp('0. Exit')
 	disp('1. Plot all models in 1 window (select single hour)')
 	disp('2. Plot all hours for model (select single model)')
 	disp('3. Compare Orig and CBE (3 plots)')
+    disp(strcat('4. Change color schema. Current:', allColorSchemas(colorSchema)))
 	choice = input('Select an action to perform: ');
 	clc
 	switch choice
@@ -36,13 +39,13 @@ while not(choice == 0)
 		result = loadMainDataFile(MAIN);
 		if not(result == -1)
 			MAIN = result;
-			actionPlotAllModels(MAIN);
+			actionPlotAllModels(MAIN, colorSchema);
 		end
 	case 2
 		result = loadMainDataFile(MAIN);
 		if not(result == -1)
 			MAIN = result;
-			actionPlotSingleModel(MAIN);
+			actionPlotSingleModel(MAIN, colorSchema);
 		end
 	case 3
 		result = loadCBE(CBE);
@@ -55,7 +58,14 @@ while not(choice == 0)
 		if not(result == -1)
 			ORIG = result;
 			actionCompareEnsembles(CBE, ORIG);
-		end
+        end
+    case 4
+        disp('Select an option:')
+		SelectionIds = 1:length(allColorSchemas);
+		T = table(SelectionIds(:), allColorSchemas(:), 'VariableNames',{'ID','COLOR SCHEMA'});
+		disp(T)
+		colorSchema = input('Select model id 1-8: ');
+		clc
 	otherwise
 		fprintf('Error: unknown action\n')
 	end

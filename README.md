@@ -2,7 +2,7 @@
 
 #### Table of contents
 
--   Installation guid
+-   Installation guide
 -   Folder/File structure description
 -   Simple idea & project description
 -   Output samples
@@ -10,6 +10,10 @@
 ---
 
 Total 461 line of code in /dist folder over all files
+
+#### Installation guide
+
+This can be found in INSTALL.md file
 
 #### Folder/File structure description
 
@@ -27,7 +31,7 @@ Total 461 line of code in /dist folder over all files
 
 #### Simple idea & project description
 
-![flowchart](/images/flowchart.png)
+![flowchart](/images/flowchart3.png)
 
 **_Any room for improvement?_**
 
@@ -35,6 +39,27 @@ Instead of loading pre-proccesed CBE, I could implement parallel based algorithm
 
 ---
 
-#### Output samples
+## Output samples
 
-map images
+### Menu sample:
+
+![menu 1](/images/screenshots/menu-sample1.png)
+![menu 2](/images/screenshots/menu-sample2.png)
+
+
+### Option 1 sample:
+
+![option 1](/images/screenshots/menu-action1.png)
+
+### Option 2 sample:
+
+
+![option 2](/images/screenshots/menu-action2.png)
+
+### Option 3 sample:
+
+![option 3](/images/screenshots/menu-action3.png)
+
+## Sharpener strenght levels 1-5
+
+![sharpener](/images/sharpener-example/sharpener.gif)
