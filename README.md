@@ -60,4 +60,4 @@ Instead of loading pre-proccesed CBE, I could implement parallel based algorithm
 
 ## Sharpener strenght levels 1-5
 
-![sharpener](/images/sharpener-example/sharpener.gif)
+![sharpener](/images/sharpener.gif)
