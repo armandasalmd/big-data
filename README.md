@@ -9,7 +9,7 @@
 
 ---
 
-Total 461 line of code in /dist folder over all files
+Total 473 lines of code in /dist folder over all files
 
 #### Installation guide
 
@@ -46,13 +46,11 @@ Instead of loading pre-proccesed CBE, I could implement parallel based algorithm
 ![menu 1](/images/screenshots/menu-sample1.png)
 ![menu 2](/images/screenshots/menu-sample2.png)
 
-
 ### Option 1 sample:
 
 ![option 1](/images/screenshots/menu-action1.png)
 
 ### Option 2 sample:
-
 
 ![option 2](/images/screenshots/menu-action2.png)
 
