@@ -1,9 +1,15 @@
 function actionPlotAllModels(models, colorSchemaId)
-	hour = input('Select an hour 1-25: ');
-	if hour >= 1 && hour <= 25
-		draw(models(:,:,:,hour), strcat("Plot All Models. Hour ", int2str(hour)));
-	end
-	changeColorSchema(colorSchemaId);
+    if colorSchemaId >= 0
+        hour = input('Select an hour 1-25: ');
+        if hour >= 1 && hour <= 25
+            draw(models(:,:,:,hour), strcat("Plot All Models. Hour ", int2str(hour)));
+        end
+        changeColorSchema(colorSchemaId);
+    else
+        % Test call
+        hour = 1;
+        draw(models(:,:,:,hour), strcat("Plot All Models. Hour ", int2str(hour)));
+    end
 end
 
 % expects 8x700x400 matrix

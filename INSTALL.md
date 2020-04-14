@@ -3,9 +3,8 @@
 #### Table of contents
 
 -   Prerequisites
--	Downloading big data files
+-   Downloading big data files
 -   Running the code
-
 
 **_Prerequisites_**
 
@@ -16,38 +15,37 @@
 
 **_Downloading big data files_**
 
--	Download source code
-	-	`git clone https://github.coventry.ac.uk/barkausa/big-data.git`
-	-	Or extract the `ZIP/RAR` file
+-   Download source code
 
--	create `/data` directory
--	create `/data/cbe` directory
--	create `/data/org` directory
+    -   `git clone https://github.coventry.ac.uk/barkausa/big-data.git`
+    -   Or extract the `ZIP/RAR` file
 
-> We are going to use MODEL COMBINED and Cluster Based Ensemble data
+-   create `/data` directory
+-   create `/data/cbe` directory
+-   create `/data/org` directory
+
+> We are going to use: MODEL COMBINED & Cluster Based Ensemble data
 
 [Download link for MODEL COMBINED](https://cumoodle.coventry.ac.uk/mod/resource/view.php?id=2495570)
 
 [Download link for CBE data](https://cumoodle.coventry.ac.uk/mod/resource/view.php?id=2495978)
 
-Download it and ensure you place it in root/data/ folder like this:
+Download it and ensure you place it in `_root_/data/` folder like this:
 
--	/data
-	-	/cbe
-		-	24HR_CBE_01.csv
-		-	...
-		-	24HR_CBE_25.csv
-	-	/org
-		-	24HR_Orig_01.csv
-		-	...
-		-	24HR_Orig_25.csv
-	-	models-combined.nc
-
-
+-   /data
+    -   /cbe
+        -   24HR_CBE_01.csv
+        -   ...
+        -   24HR_CBE_25.csv
+    -   /org
+        -   24HR_Orig_01.csv
+        -   ...
+        -   24HR_Orig_25.csv
+    -   models-combined.nc
 
 **_Running the code_**
 
--	Open Matlab in ./big-data/dist/ folder
--	Type: `program` in Matlab console to START the program
+-   Open Matlab in ./big-data/dist/ folder
+-   Type: `program` in Matlab console to START the program
 
 And explore the program. That's it :)
