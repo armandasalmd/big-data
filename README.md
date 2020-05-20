@@ -1,5 +1,7 @@
 ## Big data project description
 
+This project was a part of university course. We have got a challenge to work with big data sets. In this example, it was Ozone(O3) layer thickness data. It was loaded, handled and properly displayed/visualised.
+
 #### Table of contents
 
 -   Installation guide
